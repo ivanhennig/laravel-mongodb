@@ -191,6 +191,11 @@ class Builder extends BaseBuilder
         return $this->getFresh($columns);
     }
 
+    public function setAggregate($function, $columns)
+    {
+        return parent::setAggregate($function, $columns);
+    }
+
     /**
      * @inheritdoc
      */
