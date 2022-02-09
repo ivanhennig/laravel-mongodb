@@ -14,7 +14,7 @@ This package adds functionalities to the Eloquent model and Query builder for Mo
     - [Laravel version Compatibility](#laravel-version-compatibility)
     - [Laravel](#laravel)
     - [Lumen](#lumen)
-    - [Non-Laravel projects](#non-laravel-projects)
+    - [Non-Laravel projects](#non-laravel-projects)~~~~
   - [Testing](#testing)
   - [Database Testing](#database-testing)
   - [Configuration](#configuration)
