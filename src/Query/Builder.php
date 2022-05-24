@@ -254,6 +254,17 @@ class Builder extends BaseBuilder
         if ($this->groups || $this->aggregate || $this->addFields) {
             $group = [];
             $unwinds = [];
+            if ($this->addFields && empty($this->groups) && empty($this->aggregate)) {
+                $projections = [];
+
+                // Convert select columns to simple projections.
+                foreach ($this->columns as $column) {
+                    $projections[$column] = true;
+                }
+
+                // Add custom projections.
+                $this->projections = array_merge($projections, $this->projections ?? []);
+            }
 
             // Add grouping columns to the $group part of the aggregation pipeline.
             if ($this->groups) {
@@ -345,11 +356,11 @@ class Builder extends BaseBuilder
             if ($this->limit) {
                 $pipeline[] = ['$limit' => $this->limit];
             }
-            if ($this->projections) {
-                $pipeline[] = ['$project' => $this->projections];
-            }
             if ($this->addFields) {
                 $pipeline[] = ['$addFields' => $this->addFields];
+            }
+            if ($this->projections) {
+                $pipeline[] = ['$project' => $this->projections];
             }
 
             $options = [
@@ -1266,6 +1277,7 @@ class Builder extends BaseBuilder
     public function selectRaw($expression, array $bindings = [])
     {
         $this->addFields[$expression] = $bindings;
+        $this->projections[$expression] = true;
         return $this;
     }
 
