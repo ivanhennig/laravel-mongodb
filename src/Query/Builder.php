@@ -36,6 +36,14 @@ class Builder extends BaseBuilder
      */
     public $projections;
 
+
+    /**
+     * Appends new fields to existing documents
+     *
+     * @var array
+     */
+    public $addFields;
+
     /**
      * The cursor timeout value.
      *
@@ -243,7 +251,7 @@ class Builder extends BaseBuilder
         $wheres = $this->compileWheres();
 
         // Use MongoDB's aggregation framework when using grouping or aggregation functions.
-        if ($this->groups || $this->aggregate) {
+        if ($this->groups || $this->aggregate || $this->addFields) {
             $group = [];
             $unwinds = [];
 
@@ -339,6 +347,9 @@ class Builder extends BaseBuilder
             }
             if ($this->projections) {
                 $pipeline[] = ['$project' => $this->projections];
+            }
+            if ($this->addFields) {
+                $pipeline[] = ['$addFields' => $this->addFields];
             }
 
             $options = [
@@ -1249,6 +1260,12 @@ class Builder extends BaseBuilder
     {
         $this->options = $options;
 
+        return $this;
+    }
+
+    public function selectRaw($expression, array $bindings = [])
+    {
+        $this->addFields[$expression] = $bindings;
         return $this;
     }
 
