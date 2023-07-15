@@ -24,6 +24,7 @@ use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property string $username
+ * @property MemberStatus member_status
  */
 class User extends Eloquent implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -33,7 +34,11 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
     use Notifiable;
 
     protected $connection = 'mongodb';
-    protected $dates = ['birthday', 'entry.date'];
+    protected $casts = [
+        'birthday' => 'datetime',
+        'entry.date' => 'datetime',
+        'member_status' => MemberStatus::class,
+    ];
     protected static $unguarded = true;
 
     public function books()
