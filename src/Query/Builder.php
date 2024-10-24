@@ -548,6 +548,17 @@ class Builder extends BaseBuilder
         return $this;
     }
 
+    public function orderByRaw($sql, $bindings = [])
+    {
+        $this->orders = $this->orders ?? [];
+        if (is_string($sql)) {
+            $this->orders[(string) $sql] = $bindings;
+        } else {
+            $this->orders = array_merge($this->orders, $sql);
+        }
+        return $this;
+    }
+
     /**
      * @inheritdoc
      */
