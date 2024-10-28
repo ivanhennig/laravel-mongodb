@@ -153,8 +153,8 @@ class Builder extends BaseBuilder
      */
     public function project($columns)
     {
-        $this->projections = is_array($columns) ? $columns : func_get_args();
-
+        $columns = is_array($columns) ? $columns : func_get_args();
+        $this->projections = array_merge($this->projections ?? [], $columns);
         return $this;
     }
 
